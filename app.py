@@ -43,6 +43,11 @@ def get_ranks():
     return jsonify([]), 200
 
 
+@app.route("/games", methods=["GET"])
+def get_games():
+    return jsonify(list(cache.keys())), 200
+
+
 # Background scheduler to save cache
 def save_cache():
     while True:
