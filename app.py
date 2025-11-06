@@ -71,6 +71,12 @@ def load_cache():
         print(f"Failed to load cache.json: {e}")
 
 
+@app.route("/cleanup", methods=["GET", "POST"])
+def cleanup_cache():
+    cache.clear()
+    return "Cache cleared", 200
+
+
 if __name__ == "__main__":
     load_cache()
     thread = threading.Thread(target=save_cache, daemon=True)
