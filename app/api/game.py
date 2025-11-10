@@ -35,3 +35,20 @@ def clear_game_rankings(game_id):
         return "Cleared", 200
     else:
         return "No Data Found", 404
+
+
+@game_bp.route("/stats", methods=["GET"])
+def get_cache_stats():
+    try:
+        stats = {
+            "total_games": cache.get_game_count(),
+            "total_rankings": sum(
+                cache.get_rank_count(game) for game in cache.get_all_games()
+            ),
+            "rank_counts": {
+                game: cache.get_rank_count(game) for game in cache.get_all_games()
+            },
+        }
+        return jsonify(stats), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to get cache stats: {str(e)}"}), 500

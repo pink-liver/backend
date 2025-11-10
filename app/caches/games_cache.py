@@ -45,6 +45,21 @@ class GameCache:
         print("Getting all games")
         return list(self._cache.keys())
 
+    def get_game_count(self) -> int:
+        print("Getting game count")
+        return len(self._cache)
+
+    def get_rank_count(self, game: str) -> int:
+        print(f"Getting rank count for game {game}")
+        return len(self._cache.get(game, []))
+
+    def clear_game_rankings(self, game: str) -> bool:
+        print(f"Clearing rankings for game {game}")
+        if game in self._cache:
+            del self._cache[game]
+            return True
+        return False
+
     def load_cache(self) -> bool:
         print(f"Loading cache from {self.cache_file}")
         if not os.path.exists("cache.json"):
