@@ -20,20 +20,6 @@ class GameCache:
         self._cache = {}
         self.load_cache()
 
-    def load_cache(self) -> bool:
-        print(f"Loading cache from {self.cache_file}")
-        if not os.path.exists("cache.json"):
-            return
-
-        try:
-            print("Loading cache from cache.json")
-            with open("cache.json", "r", encoding="utf-8") as f:
-                self._cache.update(json.load(f))
-            print("Cache loaded successfully")
-        except Exception as e:
-            print(f"Failed to load cache.json: {e}")
-            return True
-
     def add_rank_entry(
         self, game: str, name: str, score: str, timestamp: Optional[str] = None
     ) -> bool:
@@ -59,20 +45,19 @@ class GameCache:
         print("Getting all games")
         return list(self._cache.keys())
 
-    def get_game_count(self) -> int:
-        print("Getting game count")
-        return len(self._cache)
+    def load_cache(self) -> bool:
+        print(f"Loading cache from {self.cache_file}")
+        if not os.path.exists("cache.json"):
+            return
 
-    def get_rank_count(self, game: str) -> int:
-        print(f"Getting rank count for game {game}")
-        return len(self._cache.get(game, []))
-
-    def clear_game_rankings(self, game: str) -> bool:
-        print(f"Clearing rankings for game {game}")
-        if game in self._cache:
-            del self._cache[game]
+        try:
+            print("Loading cache from cache.json")
+            with open("cache.json", "r", encoding="utf-8") as f:
+                self._cache.update(json.load(f))
+            print("Cache loaded successfully")
+        except Exception as e:
+            print(f"Failed to load cache.json: {e}")
             return True
-        return False
 
     def clear_all_cache(self) -> None:
         print("Clearing all cache")
