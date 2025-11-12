@@ -17,10 +17,11 @@ class RankEntry:
 class GameCache:
 
     def __init__(self, cache_file: str = "./files/games_cache.json") -> None:
-        self.cache_file = cache_file
+        self._cache_file = cache_file
         self._cache = {}
-        self._lock: threading.Lock = threading.Lock()
         self.load_cache()
+
+        self._lock: threading.Lock = threading.Lock()
 
     def add_rank_entry(
         self,
@@ -77,17 +78,17 @@ class GameCache:
         return False
 
     def load_cache(self) -> bool:
-        if not os.path.exists(self.cache_file):
-            print(f"Cache file {self.cache_file} does not exist.")
+        if not os.path.exists(self._cache_file):
+            print(f"Cache file {self._cache_file} does not exist.")
             return
 
         try:
-            print(f"Loading cache from {self.cache_file}")
-            with open(self.cache_file, "r", encoding="utf-8") as f:
+            print(f"Loading cache from {self._cache_file}")
+            with open(self._cache_file, "r", encoding="utf-8") as f:
                 self._cache.update(json.load(f))
             print("Cache loaded successfully")
         except Exception as e:
-            print(f"Failed to load {self.cache_file}: {e}")
+            print(f"Failed to load {self._cache_file}: {e}")
             return True
 
     def clear_all_cache(self) -> None:
@@ -96,18 +97,18 @@ class GameCache:
             self._cache.clear()
 
     def save_cache(self) -> bool:
-        print(f"Saving cache to {self.cache_file}")
+        print(f"Saving cache to {self._cache_file}")
         try:
             with self._lock:
                 cache_copy = self._cache.copy()
 
-            with open(self.cache_file, "w", encoding="utf-8") as f:
+            with open(self._cache_file, "w", encoding="utf-8") as f:
                 json.dump(cache_copy, f, ensure_ascii=False, indent=2)
 
-            print(f"Cache saved successfully to {self.cache_file}")
+            print(f"Cache saved successfully to {self._cache_file}")
             return True
         except Exception as e:
-            print(f"Failed to save cache to {self.cache_file}: {e}")
+            print(f"Failed to save cache to {self._cache_file}: {e}")
         return False
 
 
