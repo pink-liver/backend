@@ -15,7 +15,7 @@ class RankEntry:
 
 class GameCache:
 
-    def __init__(self, cache_file: str = "cache.json") -> None:
+    def __init__(self, cache_file: str = "./files/games_cache.json") -> None:
         self.cache_file = cache_file
         self._cache = {}
         self.load_cache()
@@ -61,17 +61,17 @@ class GameCache:
         return False
 
     def load_cache(self) -> bool:
-        print(f"Loading cache from {self.cache_file}")
-        if not os.path.exists("cache.json"):
+        if not os.path.exists(self.cache_file):
+            print(f"Cache file {self.cache_file} does not exist.")
             return
 
         try:
-            print("Loading cache from cache.json")
-            with open("cache.json", "r", encoding="utf-8") as f:
+            print(f"Loading cache from {self.cache_file}")
+            with open(self.cache_file, "r", encoding="utf-8") as f:
                 self._cache.update(json.load(f))
             print("Cache loaded successfully")
         except Exception as e:
-            print(f"Failed to load cache.json: {e}")
+            print(f"Failed to load {self.cache_file}: {e}")
             return True
 
     def clear_all_cache(self) -> None:
