@@ -5,6 +5,9 @@ class BaseConfig:
     DEBUG = False
     AUTO_SAVE_INTERVAL = int(os.getenv("AUTO_SAVE_INTERVAL", "600"))
 
+    CORS_ORIGINS = "*"
+    CORS_ALLOW_CREDENTIALS = True
+
 
 class DevelopmentConfig(BaseConfig):
     DEBUG = True
